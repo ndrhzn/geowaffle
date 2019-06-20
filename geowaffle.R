@@ -38,11 +38,11 @@ for(i in unique(df_waffle$code)) {
 png('geowaffle.png', width = 1000, height = 800)
 
 ggplot(df_final)+
-  geom_tile(aes(x = x, y = y, fill = candidate))+
+  geom_tile(aes(x = x, y = y, fill = candidate), color = '#F3F7F7', size = 0.025)+
   facet_geo(~region, grid = ukraine %>% filter(!code %in% c(26, 27)))+
   scale_fill_manual(values = c('#66c2a5', '#fc8d62'))+
   labs(title = 'Другий тур виборів Президента України 2019 року',
-       subtitle = 'Subitlte',
+       subtitle = 'Кожен прямокутник позначає один набраний кандидатом відсоток голосів виборців',
        caption = 'Дані: ЦВК України | Візуалізація: Textura.in.ua')+
   theme_void(base_family = 'Ubuntu Mono')+
   theme(
@@ -55,6 +55,27 @@ ggplot(df_final)+
     plot.caption = element_text(size = 12, margin = margin(t = 20)),
     plot.background = element_rect(fill = '#F3F7F7'),
     plot.margin = unit(c(1.5, 1.5, 1.5, 1.5), 'cm')
+  )
+
+dev.off()
+
+## postcard -----------------------------------------------------------------
+png(filename = 'postcard.png', width = 210, height = 148, units = 'mm', res = 300)
+
+ggplot(df_final)+
+  geom_tile(aes(x = x, y = y, fill = candidate))+
+  facet_geo(~region, grid = ukraine %>% filter(!code %in% c(26, 27)))+
+  scale_fill_manual(values = c('#66c2a5', '#fc8d62'))+
+  labs(caption = 'Textura.in.ua')+
+  theme_void(base_family = 'Ubuntu Mono')+
+  theme(
+    legend.position = 'none',
+    strip.text = element_blank(),
+    plot.caption = element_text(family = 'Ubuntu Mono', 
+                                margin = margin(t = 20),
+                                size = 10, color = '#324759'),
+    plot.background = element_rect(fill = '#F3F7F7'),
+    plot.margin = unit(c(0.75, 0.75, 0.75, 0.75), 'cm')
   )
 
 dev.off()
